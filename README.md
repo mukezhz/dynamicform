@@ -26,6 +26,11 @@ mv .env_sample .env
 
 4. update the .env
 
+5. to runt he project
+```
+python app.py -p 8000
+```
+
 **NOTE:** You need to install mysql and create database before filling into .env
  
  ### Ways to install mysql:
