@@ -11,9 +11,31 @@ from .query import (
 )
 
 
-def create_user_table(cur):
+def create_user_table(conn, cur):
     try:
         cur.execute(CREATE_USER_TABLE)
+        conn.commit()
+    except OperationalError:
+        return False
+    else:
+        return True
+
+
+def drop_user_table(conn, cur):
+    try:
+        cur.execute(DROP_USER_TABLE)
+        conn.commit()
+    except OperationalError:
+        return False
+    else:
+        return True
+
+
+def delete_user_from_id(conn, cur, id):
+    try:
+        if not cur.execute(DELETE_USER_FROM_ID, (id,)):
+            return False
+        conn.commit()
     except OperationalError:
         return False
     else:
@@ -48,29 +70,9 @@ def select_all_user_table(cur):
         return True
 
 
-def drop_user_table(cur):
-    try:
-        cur.execute(DROP_USER_TABLE)
-    except OperationalError:
-        return False
-    else:
-        return True
-
-
 def get_user_from_id(cur, id):
     try:
         cur.execute(GET_USER_FROM_ID, (id,))
-    except OperationalError:
-        return False
-    else:
-        return True
-
-
-def delete_user_from_id(conn, cur, id):
-    try:
-        if not cur.execute(DELETE_USER_FROM_ID, (id,)):
-            return False
-        conn.commit()
     except OperationalError:
         return False
     else:

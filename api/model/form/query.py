@@ -4,7 +4,11 @@ CREATE TABLE Form (
   created_at timestamp not null default CURRENT_TIMESTAMP,
   title VARCHAR(100) not null,
   subtitle varchar(255) null
-)
+);
+"""
+
+DROP_FORM_TABLE = """
+  DROP TABLE Form;
 """
 
 INSERT_INTO_FORM_TABLE = """
@@ -16,6 +20,6 @@ SELECT_ALL_FORM_TABLE = """
   SELECT * FROM Form;
 """
 
-DROP_FROM_TABLE = """
-  DROP TABLE Form;
+DELETE_FORM_FROM_ID = """
+  DELETE FROM Form WHERE id=%s;
 """
