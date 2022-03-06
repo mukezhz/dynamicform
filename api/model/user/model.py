@@ -68,7 +68,8 @@ def get_user_from_id(cur, id):
 
 def delete_user_from_id(conn, cur, id):
     try:
-        cur.execute(DELETE_USER_FROM_ID, (id,))
+        if not cur.execute(DELETE_USER_FROM_ID, (id,)):
+            return False
         conn.commit()
     except OperationalError:
         return False
