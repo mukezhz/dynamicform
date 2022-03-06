@@ -5,10 +5,9 @@ CREATE TABLE User (
   name varchar(255) NOT NULL,
   address varchar(255) NOT NULL,
   phone varchar(255) DEFAULT NULL,
-  email varchar(255) NOT NULL,
+  email varchar(255) NOT NULL UNIQUE,
   password varchar(255) NOT NULL,
   PRIMARY KEY (id)
-  UNIQUE (email)
 );
 """
 
@@ -17,7 +16,10 @@ INSERT_INTO_USER_TABLE = """
   VALUES (%s , %s, %s, %s, %s, %s);
 """
 
-SELECT_ALL_UESR_TABLE = """
+SELECT_ALL_USER_TABLE = """
   SELECT * FROM User ;
 """
 
+DROP_USER_TABLE = """
+  DROP TABLE User;
+"""

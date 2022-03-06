@@ -1,7 +1,12 @@
 from uuid import uuid4
 from MySQLdb import OperationalError, IntegrityError
 from werkzeug.security import generate_password_hash
-from .query import CREATE_USER_TABLE, INSERT_INTO_USER_TABLE, SELECT_ALL_UESR_TABLE
+from .query import (
+    CREATE_USER_TABLE,
+    INSERT_INTO_USER_TABLE,
+    SELECT_ALL_USER_TABLE,
+    DROP_USER_TABLE,
+)
 
 
 def create_user_table(cur):
@@ -34,7 +39,16 @@ def insert_into_user_table(conn, cur, **kwargs):
 
 def select_all_user_table(cur):
     try:
-        return cur.execute(SELECT_ALL_UESR_TABLE)
+        return cur.execute(SELECT_ALL_USER_TABLE)
+    except OperationalError:
+        return False
+    else:
+        return True
+
+
+def drop_user_table(cur):
+    try:
+        cur.execute(DROP_USER_TABLE)
     except OperationalError:
         return False
     else:
