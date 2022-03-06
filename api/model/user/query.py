@@ -27,3 +27,7 @@ DROP_USER_TABLE = """
 GET_USER_FROM_ID = """
   SELECT * FROM User WHERE id=%s;
 """
+
+DELETE_USER_FROM_ID = """
+  DELETE FROM User WHERE id=%s;
+"""

@@ -7,6 +7,7 @@ from .query import (
     SELECT_ALL_USER_TABLE,
     DROP_USER_TABLE,
     GET_USER_FROM_ID,
+    DELETE_USER_FROM_ID,
 )
 
 
@@ -59,6 +60,16 @@ def drop_user_table(cur):
 def get_user_from_id(cur, id):
     try:
         cur.execute(GET_USER_FROM_ID, (id,))
+    except OperationalError:
+        return False
+    else:
+        return True
+
+
+def delete_user_from_id(conn, cur, id):
+    try:
+        cur.execute(DELETE_USER_FROM_ID, (id,))
+        conn.commit()
     except OperationalError:
         return False
     else:

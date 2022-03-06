@@ -1,7 +1,12 @@
 from os import environ
 import json
 from flask import request, jsonify
-from api.model.user.operation import get_users, set_user, get_user_details
+from api.model.user.operation import (
+    get_users,
+    set_user,
+    get_user_details,
+    delete_user_details,
+)
 
 
 def index():
@@ -43,5 +48,12 @@ def create_user():
 def get_user(id):
     if request.method == "GET":
         return jsonify(get_user_details(id=id))
+    else:
+        return jsonify({"message": "Invalid id has been provided"}), 400
+
+
+def delete_user(id):
+    if request.method == "DELETE" and delete_user_details(id=id):
+        return jsonify({"message": "User deleted successfully"}), 200
     else:
         return jsonify({"message": "Invalid id has been provided"}), 400

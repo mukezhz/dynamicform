@@ -5,6 +5,7 @@ from api.model.user.model import (
     insert_into_user_table,
     select_all_user_table,
     get_user_from_id,
+    delete_user_from_id,
 )
 
 hostname = environ.get("MYSQL_HOST")
@@ -83,3 +84,11 @@ def get_user_details(**kwargs):
                     result,
                 )
             )
+
+
+def delete_user_details(**kwargs):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+        id = kwargs.get("id")
+        return delete_user_from_id(conn, cur, id)
