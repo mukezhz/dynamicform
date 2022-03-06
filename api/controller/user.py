@@ -13,7 +13,7 @@ def index():
     if request.method == "GET":
         datas = get_users()
         # return the list of users after fetching the users from database
-        return jsonify(datas)
+        return jsonify(datas), 200
     else:
         return jsonify({"message": "Method Not Implementd"}), 405
 
