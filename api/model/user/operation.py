@@ -45,6 +45,7 @@ def set_user(**kwargs):
     with MySQLManager(hostname, username, password, database) as sql:
         conn = sql
         cur = conn.cursor()
+        userID = kwargs.get("userID")
         name = kwargs.get("name")
         address = kwargs.get("address")
         phone = kwargs.get("phone")
@@ -54,6 +55,7 @@ def set_user(**kwargs):
         return insert_into_user_table(
             conn,
             cur,
+            userID=userID,
             name=name,
             address=address,
             phone=phone,

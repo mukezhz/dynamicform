@@ -44,7 +44,7 @@ def delete_user_from_id(conn, cur, id):
 
 def insert_into_user_table(conn, cur, **kwargs):
     try:
-        id = uuid4()
+        userID = kwargs.get("userID")
         name = kwargs.get("name")
         address = kwargs.get("address")
         phone = kwargs.get("phone")
@@ -52,7 +52,8 @@ def insert_into_user_table(conn, cur, **kwargs):
         password = kwargs.get("password")
         hashed_password = generate_password_hash(password)
         cur.execute(
-            INSERT_INTO_USER_TABLE, (id, name, address, phone, email, hashed_password)
+            INSERT_INTO_USER_TABLE,
+            (userID, name, address, phone, email, hashed_password),
         )
         conn.commit()
     except IntegrityError:
