@@ -4,6 +4,7 @@ from api.model.user.model import (
     create_user_table,
     insert_into_user_table,
     select_all_user_table,
+    get_user_from_id,
 )
 
 hostname = environ.get("MYSQL_HOST")
@@ -12,7 +13,7 @@ password = environ.get("MYSQL_PASSWORD")
 database = environ.get("MYSQL_DB")
 
 
-def get_all_user():
+def get_users():
     with MySQLManager(hostname, username, password, database) as sql:
         conn = sql
         cur = conn.cursor()
@@ -58,3 +59,27 @@ def set_user(**kwargs):
             email=email,
             password=passwd,
         )
+
+
+def get_user_details(**kwargs):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+        id = kwargs.get("id")
+        if get_user_from_id(cur, id) > 0:
+            results = cur.fetchall()
+            result = results[0]
+            return dict(
+                zip(
+                    (
+                        "id",
+                        "created_at",
+                        "name",
+                        "address",
+                        "phone",
+                        "email",
+                        "password",
+                    ),
+                    result,
+                )
+            )

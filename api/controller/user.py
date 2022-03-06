@@ -1,12 +1,12 @@
 from os import environ
 import json
 from flask import request, jsonify
-from api.model.user.operation import get_all_user, set_user
+from api.model.user.operation import get_users, set_user, get_user_details
 
 
-def index(id=None):
+def index():
     if request.method == "GET":
-        datas = get_all_user()
+        datas = get_users()
         # return the list of users after fetching the users from database
         return jsonify(datas)
     else:
@@ -38,3 +38,10 @@ def create_user():
                 400,
             )
             # 400: Bad Request
+
+
+def get_user(id):
+    if request.method == "GET":
+        return jsonify(get_user_details(id=id))
+    else:
+        return jsonify({"message": "Invalid id has been provided"}), 400

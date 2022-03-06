@@ -6,6 +6,7 @@ from .query import (
     INSERT_INTO_USER_TABLE,
     SELECT_ALL_USER_TABLE,
     DROP_USER_TABLE,
+    GET_USER_FROM_ID,
 )
 
 
@@ -49,6 +50,15 @@ def select_all_user_table(cur):
 def drop_user_table(cur):
     try:
         cur.execute(DROP_USER_TABLE)
+    except OperationalError:
+        return False
+    else:
+        return True
+
+
+def get_user_from_id(cur, id):
+    try:
+        cur.execute(GET_USER_FROM_ID, (id,))
     except OperationalError:
         return False
     else:

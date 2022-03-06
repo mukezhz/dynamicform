@@ -23,3 +23,7 @@ SELECT_ALL_USER_TABLE = """
 DROP_USER_TABLE = """
   DROP TABLE User;
 """
+
+GET_USER_FROM_ID = """
+  SELECT * FROM User WHERE id=%s;
+"""
