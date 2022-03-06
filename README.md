@@ -26,7 +26,12 @@ mv .env_sample .env
 
 4. update the .env
 
-5. to runt he project
+5. create necessary tables
+```
+python db.py -t all
+```
+
+6. to run the project
 ```
 python app.py -p 8000
 ```
