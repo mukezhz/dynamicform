@@ -1,6 +1,6 @@
 CREATE_BLOCK_TABLE = """
 CREATE TABLE Block (
-  id int unsigned not null auto_increment primary key,
+  id varchar(36) not null primary key,
   created_at timestamp not null default CURRENT_TIMESTAMP,
   typeof varchar(50) not null default "text",
   isRequired BOOLEAN null default 0,
@@ -15,8 +15,8 @@ DROP_BLOCK_TABLE = """
 """
 
 INSERT_INTO_BLOCK_TABLE = """
-  INSERT INTO Block (typeof, idRequired, answer, options, question)
-  VALUES (%s , %s, %s, %s, %s);
+  INSERT INTO Block (id, typeof, isRequired, answer, options, question)
+  VALUES (%s, %s , %s, %s, %s, %s);
 """
 
 SELECT_ALL_BLOCK_TABLE = """

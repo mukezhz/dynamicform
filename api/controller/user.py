@@ -1,3 +1,4 @@
+from uuid import uuid4
 from os import environ
 import json
 from flask import request, jsonify
@@ -20,6 +21,7 @@ def index():
 
 def create_user():
     if request.method == "POST":
+        userID = uuid4()
         datas = json.loads(request.data)
         name = datas.get("name")
         address = datas.get("address")
@@ -29,13 +31,17 @@ def create_user():
         # TODO: checking need to be done before data storage
 
         if set_user(
+            userID=userID,
             name=name,
             address=address,
             phone=phone,
             email=email,
             password=passwd,
         ):
-            return (jsonify({"message": "Account created successfully!!!"}), 201)
+            return (
+                jsonify({"message": "Account created successfully!!!", "id": userID}),
+                201,
+            )
             # 201: Created
         else:
             return (

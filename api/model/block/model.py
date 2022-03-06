@@ -38,13 +38,14 @@ def select_all_block_table(cur):
 
 def insert_into_block_table(conn, cur, **kwargs):
     try:
+        id = kwargs.get("id")
         typeof = kwargs.get("typeof")
         isRequired = kwargs.get("isRequired")
         answer = kwargs.get("answer")
         options = kwargs.get("options")
         question = kwargs.get("question")
         cur.execute(
-            INSERT_INTO_FORM_TABLE, (typeof, isRequired, answer, options, question)
+            INSERT_INTO_BLOCK_TABLE, (id, typeof, isRequired, answer, options, question)
         )
         conn.commit()
     except IntegrityError:
