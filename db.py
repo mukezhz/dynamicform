@@ -93,6 +93,22 @@ def drop_table(tablename=None):
         conn = sql
         cur = conn.cursor()
         if not tablename:
+            print("Droping UserForm Table")
+            print("***" * 10)
+            if drop_user_form_table(conn, cur):
+                print("UserForm table deleted successfully")
+            else:
+                print(
+                    "Error while droping UserForm Table.\nMaybe Table doesn't exists."
+                )
+            print("Droping FormBlock Table")
+            print("***" * 10)
+            if drop_form_block_table(conn, cur):
+                print("FormBlock table deleted successfully")
+            else:
+                print(
+                    "Error while droping FormBlock Table.\nMaybe Table doesn't exists."
+                )
             print("Droping User Table")
             print("***" * 10)
             if drop_user_table(conn, cur):
@@ -107,12 +123,6 @@ def drop_table(tablename=None):
             else:
                 print("Error while droping Form Table.\nMaybe Table doesn't exists.")
             print("Droping Block Table")
-            print("***" * 10)
-            if drop_block_table(conn, cur):
-                print("Block table deleted successfully")
-            else:
-                print("Error while droping Block Table.\nMaybe Table doesn't exists.")
-            print("Droping UserForm Table")
             print("***" * 10)
             if drop_block_table(conn, cur):
                 print("Block table deleted successfully")
@@ -141,13 +151,17 @@ def drop_table(tablename=None):
             if drop_user_form_table(conn, cur):
                 print("UserForm table deleted successfully")
             else:
-                print("Error while deleting UserForm Table.\nMaybe Table doesn't exists.")
+                print(
+                    "Error while deleting UserForm Table.\nMaybe Table doesn't exists."
+                )
         elif tablename == "formblock":
             print("Droping FormBlock Table")
             if drop_form_block_table(conn, cur):
                 print("FormBlock table deleted successfully")
             else:
-                print("Error while deleting FormBlock Table.\nMaybe Table doesn't exists.")
+                print(
+                    "Error while deleting FormBlock Table.\nMaybe Table doesn't exists."
+                )
 
 
 parser = argparse.ArgumentParser()
