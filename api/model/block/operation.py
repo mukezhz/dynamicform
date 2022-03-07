@@ -23,6 +23,7 @@ def get_blocks():
                             (
                                 "id",
                                 "created_at",
+                                "typeof",
                                 "isRequired",
                                 "answer",
                                 "options",

@@ -4,8 +4,7 @@ CREATE TABLE Block (
   created_at timestamp not null default CURRENT_TIMESTAMP,
   typeof varchar(50) not null default "text",
   isRequired BOOLEAN null default 0,
-  answer varchar(255) null,
-  options varchar(455) null,
+  options varchar(255) null,
   question varchar(255) null
 );
 """
