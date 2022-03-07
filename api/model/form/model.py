@@ -5,6 +5,7 @@ from .query import (
     SELECT_ALL_FORM_TABLE,
     INSERT_INTO_FORM_TABLE,
     DROP_FORM_TABLE,
+    GET_FORM_FROM_ID
 )
 
 
@@ -39,10 +40,10 @@ def select_all_form_table(cur):
 
 def insert_into_form_table(conn, cur, **kwargs):
     try:
-        id = kwargs.get("id")
+        formID = kwargs.get("formID")
         title = kwargs.get("title")
         subtitle = kwargs.get("subtitle")
-        cur.execute(INSERT_INTO_FORM_TABLE, (id, title, subtitle))
+        cur.execute(INSERT_INTO_FORM_TABLE, (formID, title, subtitle))
         conn.commit()
     except IntegrityError:
         return False
@@ -57,3 +58,11 @@ def insert_dummy_data_into_form_table(cur):
         return False
     else:
         return cur
+
+def get_form_from_id(cur, formID):
+    try:
+        cur.execute(GET_FORM_FROM_ID, (formID,))
+    except OperationalError:
+        return False
+    else:
+        return True

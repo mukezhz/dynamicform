@@ -1,10 +1,10 @@
 from uuid import uuid4
 import json
 from flask import request, jsonify
-from api.model.form.operation import get_forms, set_form
+from api.model.form.operation import get_forms, set_form, get_form_details
 from api.model.block.operation import set_block
 from api.model.merge.userform import initiate_user_form
-from api.model.merge.formblock import initiate_form_block
+from api.model.merge.formblock import initiate_form_block, get_form_blocks
 
 
 def index():
@@ -25,7 +25,9 @@ def create_form():
         blocks = datas.get("blocks")
         formID = uuid4()
         message = ""
+        # Form is being created
         if set_form(id=formID, title=title, subtitle=subtitle):
+            # once form is create UserForm table is filled
             if initiate_user_form(userID=userID, formID=formID):
                 for block in blocks:
                     blockID = uuid4()
@@ -34,6 +36,7 @@ def create_form():
                     isRequired = block.get("isRequired")
                     options = block.get("options")
                     answer = block.get("answer")
+                    # Block is being filled
                     if set_block(
                         id=blockID,
                         typeof=typeof,
@@ -47,3 +50,10 @@ def create_form():
                         else:
                             message = "Error while filling Form"
         return jsonify({"message": message}), 201
+
+
+def get_form(formID):
+    if request.method == "GET":
+        return jsonify(get_form_blocks(formID=formID)), 200
+    else:
+        return jsonify({"message": "Invalid id has been provided"}), 400

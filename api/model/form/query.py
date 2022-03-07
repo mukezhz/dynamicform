@@ -24,6 +24,6 @@ DELETE_FORM_FROM_ID = """
   DELETE FROM Form WHERE id=%s;
 """
 
-SELECT_ALL_FORM_FROM_USER_ID = """
+GET_FORM_FROM_ID = """
   SELECT * FROM Form WHERE id=%s;
 """

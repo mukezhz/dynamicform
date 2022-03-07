@@ -28,6 +28,16 @@ INSERT_INTO_FORM_BLOCK = """
     VALUES (%s, %s);
 """
 
+INNER_JOIN_FORM_BLOCK = """
+SELECT Form.id, Form.title, Form.subtitle, Block.id, Block.typeof, Block.isRequired, Block.options, Block.question
+FROM Form
+INNER JOIN FormBlock 
+ON Form.id=FormBlock.formID
+INNER JOIN Block
+ON FormBlock.blockID=Block.id
+WHERE Form.id=%s
+"""
+
 
 def create_form_block_table(conn, cur):
     try:
@@ -60,3 +70,41 @@ def initiate_form_block(formID=None, blockID=None):
             return False
         else:
             return True
+
+
+def inner_join_form_block(cur, formID=None):
+    try:
+        cur.execute(INNER_JOIN_FORM_BLOCK, (formID,))
+    except OperationalError:
+        return False
+    else:
+        return True
+
+
+def get_form_blocks(**kwargs):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+        formID = kwargs.get("formID")
+        if inner_join_form_block(cur, formID=formID) > 0:
+            results = cur.fetchall()
+            datas = []
+            for result in results:
+                datas.append(
+                    dict(
+                        zip(
+                            (
+                                "formID",
+                                "title",
+                                "subtitle",
+                                "blockID",
+                                "typeof",
+                                "isRequired",
+                                "options",
+                                "question",
+                            ),
+                            result,
+                        )
+                    )
+                )
+            return datas

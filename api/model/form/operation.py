@@ -1,6 +1,6 @@
 from os import environ
 from api.model.mysqlmanager import MySQLManager
-from .model import select_all_form_table, insert_into_form_table
+from .model import select_all_form_table, insert_into_form_table, get_form_from_id
 
 
 hostname = environ.get("MYSQL_HOST")
@@ -41,3 +41,24 @@ def set_form(**kwargs):
         conn = sql
         cur = conn.cursor()
         return insert_into_form_table(conn, cur, id=id, title=title, subtitle=subtitle)
+
+
+def get_form_details(**kwargs):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+        formID = kwargs.get("formID")
+        if get_form_from_id(cur, formID) > 0:
+            results = cur.fetchall()
+            result = results[0]
+            return dict(
+                zip(
+                    (
+                        "id",
+                        "created_at",
+                        "title",
+                        "subtitle",
+                    ),
+                    result,
+                )
+            )
