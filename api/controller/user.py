@@ -7,12 +7,15 @@ from api.model.user.operation import (
     set_user,
     get_user_details,
     delete_user_details,
+    update_user_details,
 )
 
 
 def index():
     if request.method == "GET":
         datas = get_users()
+        if not datas:
+            return jsonify({"message": "No any user exits!"})
         # return the list of users after fetching the users from database
         return jsonify(datas), 200
     else:
@@ -63,3 +66,31 @@ def delete_user(id):
         return jsonify({"message": "User deleted successfully"}), 200
     else:
         return jsonify({"message": "Invalid id has been provided"}), 400
+
+
+def update_user(id):
+    if request.method == "PUT":
+        datas = request.json
+        name = datas.get("name")
+        address = datas.get("address")
+        phone = datas.get("phone")
+        email = datas.get("email")
+        # TODO: checking need to be done before data storage
+        if update_user_details(
+            userID=id,
+            name=name,
+            address=address,
+            phone=phone,
+            email=email,
+        ):
+            return (
+                jsonify({"message": "User's detail successfully updated!!!", "id": id}),
+                200,
+            )
+            # 201: Success
+        else:
+            return (
+                jsonify({"message": "Error while value updation!!!"}),
+                400,
+            )
+            # 400: Bad Request

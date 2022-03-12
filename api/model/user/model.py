@@ -8,6 +8,7 @@ from .query import (
     DROP_USER_TABLE,
     GET_USER_FROM_ID,
     DELETE_USER_FROM_ID,
+    UPDATE_USER_TABLE,
 )
 
 
@@ -75,6 +76,24 @@ def get_user_from_id(cur, id):
     try:
         cur.execute(GET_USER_FROM_ID, (id,))
     except OperationalError:
+        return False
+    else:
+        return True
+
+
+def update_user_table(conn, cur, **kwargs):
+    try:
+        userID = kwargs.get("userID")
+        name = kwargs.get("name")
+        address = kwargs.get("address")
+        phone = kwargs.get("phone")
+        email = kwargs.get("email")
+        cur.execute(
+            UPDATE_USER_TABLE,
+            (name, address, phone, email, userID),
+        )
+        conn.commit()
+    except IntegrityError:
         return False
     else:
         return True

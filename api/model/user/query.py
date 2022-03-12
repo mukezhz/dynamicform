@@ -31,3 +31,9 @@ GET_USER_FROM_ID = """
 DELETE_USER_FROM_ID = """
   DELETE FROM User WHERE id=%s;
 """
+
+
+UPDATE_USER_TABLE = """
+  UPDATE User SET name=%s, address=%s, phone=%s, email=%s
+  WHERE id=%s;
+"""
