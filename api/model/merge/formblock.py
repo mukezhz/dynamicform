@@ -9,18 +9,18 @@ database = environ.get("MYSQL_DB")
 
 
 CREATE_FORM_BLOCK_TABLE = """
-CREATE TABLE FormBlock (
-    id int unsigned not null auto_increment primary key,
-    created_at timestamp not null default CURRENT_TIMESTAMP,
-    formID VARCHAR(36) not null,
-    blockID VARCHAR(36) not null,
-    CONSTRAINT Cons_Form_Block FOREIGN KEY FK_FORM (formID) REFERENCES Form(id),
-    CONSTRAINT Cons_Block FOREIGN KEY FK_USER (blockID) REFERENCES Block(id)
-);
+    CREATE TABLE FormBlock (
+        id int unsigned not null auto_increment primary key,
+        created_at timestamp not null default CURRENT_TIMESTAMP,
+        formID VARCHAR(36) not null,
+        blockID VARCHAR(36) not null,
+        CONSTRAINT Cons_Form_Block FOREIGN KEY FK_FORM (formID) REFERENCES Form(id),
+        CONSTRAINT Cons_Block FOREIGN KEY FK_USER (blockID) REFERENCES Block(id)
+    );
 """
 
 DROP_FORM_BLOCK_TABLE = """
-DROP TABLE FormBlock;
+    DROP TABLE FormBlock;
 """
 
 INSERT_INTO_FORM_BLOCK = """
@@ -29,25 +29,34 @@ INSERT_INTO_FORM_BLOCK = """
 """
 
 INNER_JOIN_FORM_BLOCK = """
-SELECT Form.id, Form.title, Form.subtitle, Block.id, Block.typeof, Block.isRequired, Block.options, Block.question
-FROM Form
-INNER JOIN FormBlock 
-ON Form.id=FormBlock.formID
-INNER JOIN Block
-ON FormBlock.blockID=Block.id
-WHERE Form.id=%s
+    SELECT Form.id, Form.title, Form.subtitle, Block.id, Block.typeof, Block.isRequired, Block.options, Block.question
+    FROM Form
+    INNER JOIN FormBlock 
+    ON Form.id=FormBlock.formID
+    INNER JOIN Block
+    ON FormBlock.blockID=Block.id
+    WHERE Form.id=%s
 """
 
 INNER_JOIN_FORM_BLOCK_ANSWER = """
-SELECT Form.id, Form.title, Form.subtitle, Block.id, Block.typeof, Block.isRequired, Block.options, Block.question, Answer.id, Answer.answer
-FROM Form
-INNER JOIN FormBlock 
-ON Form.id=FormBlock.formID
-INNER JOIN Block
-ON FormBlock.blockID=Block.id
-INNER JOIN Answer
-ON Answer.blockID=Block.id
-WHERE Form.id=%s
+    SELECT Form.id, Form.title, Form.subtitle, Block.id, Block.typeof, Block.isRequired, Block.options, Block.question, Answer.id, Answer.answer
+    FROM Form
+    INNER JOIN FormBlock 
+    ON Form.id=FormBlock.formID
+    INNER JOIN Block
+    ON FormBlock.blockID=Block.id
+    INNER JOIN Answer
+    ON Answer.blockID=Block.id
+    WHERE Form.id=%s
+"""
+
+DELETE_FORM_BLOCK_FIELD = """
+    DELETE FROM FormBlock WHERE formID=%s
+"""
+
+
+SELECT_BLOCKID_FROM_FORMID = """
+    SELECT blockID FROM FormBlock WHERE formID=%s
 """
 
 
@@ -109,15 +118,16 @@ def get_form_block(**kwargs):
         formID = kwargs.get("formID")
         if inner_join_form_block(cur, formID=formID) > 0:
             results = cur.fetchall()
+            formID = results[0][0]
+            title = results[0][1]
+            subtite = results[0][2]
             datas = []
             for result in results:
+                result = result[3:]
                 datas.append(
                     dict(
                         zip(
                             (
-                                "formID",
-                                "title",
-                                "subtitle",
                                 "blockID",
                                 "typeof",
                                 "isRequired",
@@ -128,7 +138,13 @@ def get_form_block(**kwargs):
                         )
                     )
                 )
-            return datas
+
+            return {
+                "blocks": datas,
+                "formID": formID,
+                "title": title,
+                "subtite": subtite,
+            }
 
 
 def get_form_block_with_answer(**kwargs):
@@ -160,3 +176,27 @@ def get_form_block_with_answer(**kwargs):
                     )
                 )
             return datas
+
+
+def delete_form_block_field(formID):
+    with MySQLManager(hostname, username, password, database) as conn:
+        cur = conn.cursor()
+        try:
+            cur.execute(DELETE_FORM_BLOCK_FIELD, (formID,))
+            conn.commit()
+        except OperationalError:
+            return False
+        else:
+            return True
+
+
+def select_blockid_from_formid(formID):
+    with MySQLManager(hostname, username, password, database) as conn:
+        cur = conn.cursor()
+        try:
+            cur.execute(SELECT_BLOCKID_FROM_FORMID, (formID,))
+            resp = cur.fetchall()
+        except OperationalError:
+            return False
+        else:
+            return resp

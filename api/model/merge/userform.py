@@ -29,6 +29,9 @@ INSERT_INTO_USER_FORM = """
     VALUES (%s, %s);
 """
 
+DELETE_USER_FORM_FIELD = """
+    DELETE FROM UserForm WHERE formID=%s
+"""
 
 def create_user_form_table(conn, cur):
     try:
@@ -56,6 +59,18 @@ def initiate_user_form(userID=None, formID=None):
         cur = conn.cursor()
         try:
             cur.execute(INSERT_INTO_USER_FORM, (userID, formID))
+            conn.commit()
+        except OperationalError and IntegrityError:
+            return False
+        else:
+            return True
+
+
+def delete_user_form_field(formID):
+    with MySQLManager(hostname, username, password, database) as conn:
+        cur = conn.cursor()
+        try:
+            cur.execute(DELETE_USER_FORM_FIELD, (formID,))
             conn.commit()
         except OperationalError:
             return False

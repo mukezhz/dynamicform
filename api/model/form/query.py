@@ -27,3 +27,8 @@ DELETE_FORM_FROM_ID = """
 GET_FORM_FROM_ID = """
   SELECT * FROM Form WHERE id=%s;
 """
+
+UPDATE_FORM_TABLE = """
+  UPDATE Form SET title=%s, subtitle=%s
+  WHERE id=%s;
+"""

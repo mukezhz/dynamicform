@@ -1,7 +1,12 @@
 from os import environ
 from MySQLdb import OperationalError, IntegrityError
 from api.model.mysqlmanager import MySQLManager
-from api.model.block.model import select_all_block_table, insert_into_block_table
+from api.model.block.model import (
+    select_all_block_table,
+    insert_into_block_table,
+    update_block_table,
+    delete_block_from_id
+)
 
 hostname = environ.get("MYSQL_HOST")
 username = environ.get("MYSQL_USER")
@@ -37,22 +42,21 @@ def get_blocks():
 
 
 def set_block(**kwargs):
-    id = kwargs.get("id")
-    typeof = kwargs.get("typeof")
-    isRequired = kwargs.get("isRequired")
-    answer = kwargs.get("answer")
-    options = kwargs.get("options")
-    question = kwargs.get("question")
     with MySQLManager(hostname, username, password, database) as sql:
         conn = sql
         cur = conn.cursor()
-        return insert_into_block_table(
-            conn,
-            cur,
-            id=id,
-            typeof=typeof,
-            isRequired=isRequired,
-            answer=answer,
-            options=options,
-            question=question,
-        )
+        return insert_into_block_table(conn, cur, **kwargs)
+
+
+def update_block_details(**kwargs):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+        return update_block_table(conn, cur, **kwargs)
+
+
+def delete_block_details(blockID):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+        return delete_block_from_id(conn, cur, blockID)

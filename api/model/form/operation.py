@@ -1,6 +1,12 @@
 from os import environ
 from api.model.mysqlmanager import MySQLManager
-from .model import select_all_form_table, insert_into_form_table, get_form_from_id
+from .model import (
+    select_all_form_table,
+    insert_into_form_table,
+    get_form_from_id,
+    delete_form_from_id,
+    update_form_table,
+)
 
 
 hostname = environ.get("MYSQL_HOST")
@@ -34,13 +40,15 @@ def get_forms():
 
 
 def set_form(**kwargs):
-    id = kwargs.get("id")
+    formID = kwargs.get("formID")
     title = kwargs.get("title", "Untitled Title")
     subtitle = kwargs.get("subtitle", "")
     with MySQLManager(hostname, username, password, database) as sql:
         conn = sql
         cur = conn.cursor()
-        return insert_into_form_table(conn, cur, id=id, title=title, subtitle=subtitle)
+        return insert_into_form_table(
+            conn, cur, formID=formID, title=title, subtitle=subtitle
+        )
 
 
 def get_form_details(**kwargs):
@@ -62,3 +70,18 @@ def get_form_details(**kwargs):
                     result,
                 )
             )
+
+
+def delete_form_details(formID):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+        return delete_form_from_id(conn, cur, formID)
+
+
+def update_form_details(**kwargs):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+
+        return update_form_table(conn, cur, **kwargs)
