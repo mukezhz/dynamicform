@@ -20,7 +20,7 @@ INSERT_INTO_ANSWER_TABLE = """
 """
 
 SELECT_ALL_ANSWER_TABLE = """
-  SELECT * FROM Answer ;
+  SELECT id, created_at, blockID, answer, userID FROM Answer;
 """
 
 DELETE_ANSWER_FROM_ID = """
@@ -29,4 +29,13 @@ DELETE_ANSWER_FROM_ID = """
 
 SELECT_ANSWER_WHERE_USERID_AND_BLOCKID = """
   SELECT * FROM Answer WHERE userID=%s AND blockID=%s;
+"""
+
+SELECT_ANSWER_FROM_USERID = """
+  SELECT id FROM Answer WHERE userID=%s;
+"""
+
+UPDATE_ANSWER_TABLE = """
+  UPDATE Answer SET answer=%s
+  WHERE id=%s;
 """
