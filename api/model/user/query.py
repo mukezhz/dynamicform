@@ -2,11 +2,12 @@ CREATE_USER_TABLE = """
 CREATE TABLE User (
   id varchar(36) NOT NULL,
   created_at timestamp NOT NULL DEFAULT current_timestamp(),
-  name varchar(255) NOT NULL,
-  address varchar(255) NOT NULL,
-  phone varchar(255) DEFAULT NULL,
-  email varchar(255) NOT NULL UNIQUE,
-  password varchar(255) NOT NULL,
+  name varchar(150) NOT NULL,
+  address varchar(100) NOT NULL,
+  phone varchar(15) DEFAULT NULL,
+  email varchar(100) NOT NULL UNIQUE,
+  password varchar(100) NOT NULL,
+  token varchar(500) DEFAULT NULL,
   PRIMARY KEY (id)
 );
 """
@@ -17,7 +18,7 @@ INSERT_INTO_USER_TABLE = """
 """
 
 SELECT_ALL_USER_TABLE = """
-  SELECT * FROM User ;
+  SELECT id, name, address, phone, email, password FROM User ;
 """
 
 DROP_USER_TABLE = """
@@ -36,4 +37,17 @@ DELETE_USER_FROM_ID = """
 UPDATE_USER_TABLE = """
   UPDATE User SET name=%s, address=%s, phone=%s, email=%s
   WHERE id=%s;
+"""
+
+SELECT_PASSWORD_TOKEN_FROM_EMAIL = """
+  SELECT id, password, token FROM User WHERE email=%s;
+"""
+
+SELECT_ALL_FROM_TOKEN = """
+  SELECT * FROM User WHERE token=%s;
+"""
+
+UPDATE_TOKEN = """
+  UPDATE User SET token=%s
+  WHERE email=%s;
 """

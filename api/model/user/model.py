@@ -9,6 +9,9 @@ from .query import (
     GET_USER_FROM_ID,
     DELETE_USER_FROM_ID,
     UPDATE_USER_TABLE,
+    SELECT_PASSWORD_TOKEN_FROM_EMAIL,
+    UPDATE_TOKEN,
+    SELECT_ALL_FROM_TOKEN,
 )
 
 
@@ -94,6 +97,40 @@ def update_user_table(conn, cur, **kwargs):
         )
         conn.commit()
     except IntegrityError:
+        return False
+    else:
+        return True
+
+
+def select_password_from_email(cur, email):
+    try:
+        return cur.execute(SELECT_PASSWORD_TOKEN_FROM_EMAIL, (email,))
+    except OperationalError:
+        return False
+    else:
+        return True
+
+
+def update_token(conn, cur, **kwargs):
+    try:
+        token = kwargs.get("token")
+        email = kwargs.get("email")
+        print(token, email)
+        cur.execute(
+            UPDATE_TOKEN,
+            (token, email),
+        )
+        conn.commit()
+    except IntegrityError:
+        return False
+    else:
+        return True
+
+
+def select_all_from_token(cur, token):
+    try:
+        return cur.execute(SELECT_ALL_FROM_TOKEN, (token,))
+    except OperationalError:
         return False
     else:
         return True

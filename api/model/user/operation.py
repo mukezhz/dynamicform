@@ -7,6 +7,9 @@ from api.model.user.model import (
     get_user_from_id,
     delete_user_from_id,
     update_user_table,
+    select_password_from_email,
+    update_token,
+    select_all_from_token,
 )
 
 hostname = environ.get("MYSQL_HOST")
@@ -83,6 +86,7 @@ def get_user_details(**kwargs):
                         "phone",
                         "email",
                         "password",
+                        "token",
                     ),
                     result,
                 )
@@ -116,3 +120,45 @@ def update_user_details(**kwargs):
             phone=phone,
             email=email,
         )
+
+
+def select_user_password_token_using_email(email):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+        if select_password_from_email(cur, email) > 0:
+            results = cur.fetchone()
+            return {"id": results[0], "password": results[1], "token": results[-1]}
+        return None
+
+
+def update_user_token(**kwargs):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+
+        return update_token(conn, cur, **kwargs)
+
+
+def get_all_from_token(token):
+    with MySQLManager(hostname, username, password, database) as sql:
+        conn = sql
+        cur = conn.cursor()
+        if select_all_from_token(cur, token) > 0:
+            result = cur.fetchone()
+            return dict(
+                zip(
+                    (
+                        "id",
+                        "created_at",
+                        "name",
+                        "address",
+                        "phone",
+                        "email",
+                        "password",
+                    ),
+                    result,
+                )
+            )
+            # return {"id": results[0], "password": results[1], "token": results[-1]}
+        return None

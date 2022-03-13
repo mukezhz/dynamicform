@@ -24,7 +24,7 @@ def index():
 def create_answer():
     message = ""
     if request.method == "POST":
-        datas = json.loads(request.data)
+        datas = request.json
         title = datas.get("title")
         userID = datas.get("userID")
         formID = datas.get("formID")

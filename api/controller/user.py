@@ -8,6 +8,7 @@ from api.model.user.operation import (
     get_user_details,
     delete_user_details,
     update_user_details,
+    select_password_from_email,
 )
 
 
@@ -25,12 +26,14 @@ def index():
 def create_user():
     if request.method == "POST":
         userID = uuid4()
-        datas = json.loads(request.data)
+        datas = request.json
         name = datas.get("name")
         address = datas.get("address")
         phone = datas.get("phone")
         email = datas.get("email")
-        passwd = datas.get("password")
+        password = datas.get("password")
+        if not (userID and name and email and password):
+            return jsonify({"message": "Information is insufficient!!!"})
         # TODO: checking need to be done before data storage
 
         if set_user(
@@ -39,7 +42,7 @@ def create_user():
             address=address,
             phone=phone,
             email=email,
-            password=passwd,
+            password=password,
         ):
             return (
                 jsonify({"message": "Account created successfully!!!", "id": userID}),
@@ -48,7 +51,7 @@ def create_user():
             # 201: Created
         else:
             return (
-                jsonify({"message": "Error while value insertion!!!"}),
+                jsonify({"message": "Duplicate field occurs!!!"}),
                 400,
             )
             # 400: Bad Request
