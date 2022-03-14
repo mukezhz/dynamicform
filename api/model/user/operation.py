@@ -31,12 +31,10 @@ def get_users():
                         zip(
                             (
                                 "id",
-                                "created_at",
                                 "name",
                                 "address",
                                 "phone",
                                 "email",
-                                "password",
                             ),
                             result,
                         )
@@ -72,21 +70,18 @@ def get_user_details(**kwargs):
     with MySQLManager(hostname, username, password, database) as sql:
         conn = sql
         cur = conn.cursor()
-        id = kwargs.get("id")
-        if get_user_from_id(cur, id) > 0:
-            results = cur.fetchall()
-            result = results[0]
+        userID = kwargs.get("userID")
+        if get_user_from_id(cur, userID) > 0:
+            result = cur.fetchone()
             return dict(
                 zip(
                     (
                         "id",
                         "created_at",
                         "name",
+                        "email",
                         "address",
                         "phone",
-                        "email",
-                        "password",
-                        "token",
                     ),
                     result,
                 )
@@ -97,8 +92,8 @@ def delete_user_details(**kwargs):
     with MySQLManager(hostname, username, password, database) as sql:
         conn = sql
         cur = conn.cursor()
-        id = kwargs.get("id")
-        return delete_user_from_id(conn, cur, id)
+        userID = kwargs.get("userID")
+        return delete_user_from_id(conn, cur, userID)
 
 
 def update_user_details(**kwargs):

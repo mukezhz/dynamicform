@@ -18,7 +18,7 @@ INSERT_INTO_USER_TABLE = """
 """
 
 SELECT_ALL_USER_TABLE = """
-  SELECT id, name, address, phone, email, password FROM User ;
+  SELECT id, name, address, phone, email FROM User ;
 """
 
 DROP_USER_TABLE = """
@@ -26,7 +26,7 @@ DROP_USER_TABLE = """
 """
 
 GET_USER_FROM_ID = """
-  SELECT * FROM User WHERE id=%s;
+  SELECT id, created_at, name, email, address, phone FROM User WHERE id=%s;
 """
 
 DELETE_USER_FROM_ID = """

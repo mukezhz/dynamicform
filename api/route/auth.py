@@ -2,9 +2,9 @@ from flask import Blueprint
 from api.controller.auth import (
     login,
     logout,
-    register,
     token,
 )
+from api.controller.user import create_user as register
 
 auth_api = Blueprint("auth_api", __name__)
 

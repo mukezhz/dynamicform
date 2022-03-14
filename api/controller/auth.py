@@ -7,7 +7,6 @@ from api.model.user.operation import (
     update_user_token,
     get_all_from_token,
 )
-from api.controller.user import create_user as register
 from api.utils.token import encode_jwt, verify_token
 from api.controller.user import set_user
 
@@ -18,8 +17,11 @@ def login():
         email = datas.get("email")
         password = datas.get("password")
         if not (email and password):
-            return jsonify({"message": "Email and password is not provided!!!"})
+            return jsonify({"message": "Email and password is not provided!!!"}), 400
         infos = select_user_password_token_using_email(email)
+        if not infos:
+            return jsonify({"message": "Email doesnot exists!!!"}), 400
+
         userID = infos.get("id")
         pwhash = infos.get("password")
         refresh_token = infos.get("token")
@@ -35,9 +37,8 @@ def login():
             token_secret = environ.get("JWT_SECRET")
             access_token = encode_jwt(headers, payload, token_secret)
 
-        if not refresh_token:
+        if not refresh_token or refresh_token == "NULL":
             # jwt for obtaining refresh token
-            print("obtaining jwt token")
             headers = {"exp": str(datetime.utcnow() + timedelta(days=30))}
             refresh_secret = environ.get("JWT_REFRESH_SECRET")
             refresh_token = encode_jwt(headers, payload, refresh_secret)
@@ -47,6 +48,7 @@ def login():
             "message": "User logged in successfully!!!",
             "access_token": "Has been to to your cookie!!!",
             "refresh_token": refresh_token,
+            "userID": userID,
         }
 
         if not (refresh_token and access_token):
@@ -70,7 +72,7 @@ def logout():
         refresh_token = request.json.get("refresh_token")
         email = request.json.get("email")
         data = verify_token(refresh_token, key=refresh_secret)
-        if email == data.get("email"):
+        if not email == data.get("email"):
             return jsonify(
                 {"message": "Invalid email didn't match with refresh token!!!"}
             )

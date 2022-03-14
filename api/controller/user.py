@@ -1,7 +1,7 @@
 from uuid import uuid4
 from os import environ
 import json
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 from api.model.user.operation import (
     get_users,
     set_user,
@@ -10,6 +10,8 @@ from api.model.user.operation import (
     update_user_details,
     select_password_from_email,
 )
+from api.utils.token import token_required
+from api.controller.auth import logout
 
 
 def index():
@@ -57,21 +59,25 @@ def create_user():
             # 400: Bad Request
 
 
-def get_user(id):
+def get_user(userID):
     if request.method == "GET":
-        return jsonify(get_user_details(id=id))
+        return jsonify(get_user_details(userID=userID))
     else:
         return jsonify({"message": "Invalid id has been provided"}), 400
 
 
-def delete_user(id):
-    if request.method == "DELETE" and delete_user_details(id=id):
-        return jsonify({"message": "User deleted successfully"}), 200
-    else:
-        return jsonify({"message": "Invalid id has been provided"}), 400
+@token_required
+def delete_user(userID):
+    if request.method == "DELETE":
+        if not delete_user_details(userID=userID):
+            return jsonify({"message": "Invalid id has been provided"}), 403
+        resp = make_response(jsonify({"message": "User deleted successfully"}))
+        resp.delete_cookie(key="access_token")
+        return resp, 200
 
 
-def update_user(id):
+@token_required
+def update_user(userID):
     if request.method == "PUT":
         datas = request.json
         name = datas.get("name")
@@ -80,20 +86,24 @@ def update_user(id):
         email = datas.get("email")
         # TODO: checking need to be done before data storage
         if update_user_details(
-            userID=id,
+            userID=userID,
             name=name,
             address=address,
             phone=phone,
             email=email,
         ):
             return (
-                jsonify({"message": "User's detail successfully updated!!!", "id": id}),
+                jsonify(
+                    {"message": "User's detail successfully updated!!!", "id": userID}
+                ),
                 200,
             )
             # 201: Success
         else:
             return (
-                jsonify({"message": "Error while value updation!!!"}),
+                jsonify(
+                    {"message": "Error while value updation [Maybe duplicate email]!!!"}
+                ),
                 400,
             )
             # 400: Bad Request

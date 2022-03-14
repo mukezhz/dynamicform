@@ -35,9 +35,9 @@ def drop_user_table(conn, cur):
         return True
 
 
-def delete_user_from_id(conn, cur, id):
+def delete_user_from_id(conn, cur, userID):
     try:
-        if not cur.execute(DELETE_USER_FROM_ID, (id,)):
+        if not cur.execute(DELETE_USER_FROM_ID, (userID,)):
             return False
         conn.commit()
     except OperationalError:
@@ -115,7 +115,6 @@ def update_token(conn, cur, **kwargs):
     try:
         token = kwargs.get("token")
         email = kwargs.get("email")
-        print(token, email)
         cur.execute(
             UPDATE_TOKEN,
             (token, email),
