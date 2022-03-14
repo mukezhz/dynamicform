@@ -21,6 +21,7 @@ from api.model.merge.formblock import (
     delete_form_block_field,
     select_blockid_from_formid,
 )
+from api.utils.token import verify_user
 
 
 def index():
@@ -32,12 +33,18 @@ def index():
         return jsonify({"message": "Method Not Implemented"}), 405
 
 
-def create_form():
+@verify_user
+def create_form(**kwargs):
+    check_userID = kwargs.get("userID")
+    if not check_userID:
+        return jsonify({"message": "Unauthorized user!!!"}), 403
     if request.method == "POST":
         datas = request.json
-        userID = datas.get("userID")
         title = datas.get("title")
         subtitle = datas.get("subtitle")
+        userID = datas.get("userID")
+        if not (check_userID == userID):
+            return jsonify(({"message": "[Unauthorized user] user id didn't match!!!"}))
         blocks = datas.get("blocks")
         formID = uuid4()
         message = ""
@@ -69,21 +76,24 @@ def create_form():
         return jsonify({"message": message}), 201
 
 
-def get_form(formID):
+@verify_user
+def get_form(formID, **kwargs):
     if request.method == "GET":
         return jsonify(get_form_block(formID=formID)), 200
     else:
         return jsonify({"message": "Invalid id has been provided"}), 400
 
 
-def get_form_with_answer(formID):
+@verify_user
+def get_form_with_answer(formID, **kwargs):
     if request.method == "GET":
         return jsonify(get_form_block_with_answer(formID=formID)), 200
     else:
         return jsonify({"message": "Invalid id has been provided"}), 400
 
 
-def update_form(formID=None):
+@verify_user
+def update_form(formID=None, **kwargs):
     if request.method == "PUT":
         datas = request.json
         title = datas.get("title")
@@ -107,13 +117,14 @@ def update_form(formID=None):
         return jsonify({"message": "Form update successful!!!"}), 200
 
 
-def delete_form(formID):
+@verify_user
+def delete_form(formID, **kwargs):
     if request.method == "DELETE":
         blockIDs = select_blockid_from_formid(formID)
         try:
             if (
-                delete_form_block_field(formID)
-                and delete_user_form_field(formID)
+                delete_user_form_field(formID)
+                and delete_form_block_field(formID)
                 and delete_form_details(formID)
             ):
                 for blockID in blockIDs:

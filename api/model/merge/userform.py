@@ -33,6 +33,10 @@ DELETE_USER_FORM_FIELD = """
     DELETE FROM UserForm WHERE formID=%s
 """
 
+SELECT_ALL_FROM_USERID = """
+    SELECT id, created_at, userID, formID FROM UserForm WHERE userID=%s
+"""
+
 def create_user_form_table(conn, cur):
     try:
         cur.execute(CREATE_USER_FORM_TABLE)
@@ -72,6 +76,18 @@ def delete_user_form_field(formID):
         try:
             cur.execute(DELETE_USER_FORM_FIELD, (formID,))
             conn.commit()
+        except OperationalError:
+            return False
+        else:
+            return True
+        
+
+def select_all_from_userid(userID):
+    with MySQLManager(hostname, username, password, database) as conn:
+        cur = conn.cursor()
+        try:
+            cur.execute(SELECT_ALL_FROM_USERID, (userID,))
+            result = cur.fetchall()
         except OperationalError:
             return False
         else:

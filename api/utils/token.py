@@ -3,6 +3,7 @@ from os import environ
 from functools import wraps
 import jwt
 from api.model.user.operation import select_user_password_token_using_email
+from api.model.merge.userform import select_all_from_userid
 
 
 def encode_jwt(headers, payload, secret):
@@ -35,5 +36,26 @@ def token_required(func):
         if not (data and current_user and email and userID):
             return jsonify({"message": "Unauthorized user token is invalid!!!"}), 403
         return func(userID)
+
+    return decorator
+
+
+def verify_user(func):
+    @wraps(func)
+    def decorator(formID=None):
+        token = request.cookies.get("access_token")
+        # if "x-access-tokens" in request.headers:
+        #     token = request.headers["x-access-tokens"]
+
+        if not token:
+            return jsonify({"message": "A valid token is missing!!!"}), 403
+        data = verify_token(token, key=environ.get("JWT_SECRET"))
+        email = data.get("email")
+        userID = data.get("userID")
+        check_form = select_all_from_userid(userID)
+        # password = current_user.get("password")
+        if not (data and check_form and email and userID):
+            return jsonify({"message": "Unauthorized user token is invalid!!!"}), 403
+        return func(formID=formID, userID=userID)
 
     return decorator

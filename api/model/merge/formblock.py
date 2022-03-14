@@ -118,32 +118,38 @@ def get_form_block(**kwargs):
         formID = kwargs.get("formID")
         if inner_join_form_block(cur, formID=formID) > 0:
             results = cur.fetchall()
-            formID = results[0][0]
-            title = results[0][1]
-            subtite = results[0][2]
+            title = None
+            subtitle = None
             datas = []
-            for result in results:
-                result = result[3:]
-                datas.append(
-                    dict(
-                        zip(
-                            (
-                                "blockID",
-                                "typeof",
-                                "isRequired",
-                                "options",
-                                "question",
-                            ),
-                            result,
+            if not len(results):
+                results = None
+            else:
+                formID = results[0][0]
+                title = results[0][1]
+                subtite = results[0][2]
+                datas = []
+                for result in results:
+                    result = result[3:]
+                    datas.append(
+                        dict(
+                            zip(
+                                (
+                                    "blockID",
+                                    "typeof",
+                                    "isRequired",
+                                    "options",
+                                    "question",
+                                ),
+                                result,
+                            )
                         )
                     )
-                )
 
             return {
                 "blocks": datas,
                 "formID": formID,
                 "title": title,
-                "subtite": subtite,
+                "subtite": subtitle,
             }
 
 
