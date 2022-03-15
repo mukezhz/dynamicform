@@ -1,6 +1,6 @@
 # volume of docker
 database/
-
+mysql/
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,flask,react,vue,vuejs,visualstudiocode,vim,emacs
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,flask,react,vue,vuejs,visualstudiocode,vim,emacs

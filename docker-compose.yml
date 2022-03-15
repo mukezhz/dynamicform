@@ -8,7 +8,8 @@ services:
       - ./backend/.env
     ports:
       - 8000:5000
-    links:
+    depends_on:
+      - db
       - migration
     networks: 
       - backend_network
@@ -19,20 +20,25 @@ services:
       - ./backend/.env
     command: poetry run python db.py -t all
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - backend_network
-# database name
+
+  # database name
   db:
     image: mariadb:latest
     volumes:
-      - ${PWD}/database:/var/lib/mysql/
+      - ${PWD}/mysql:/var/lib/mysql/
     env_file:
       - ./backend/.env
     ports:
       - 3306:3306
     networks:
       - backend_network
+    restart: always
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
 
 
 volumes:
