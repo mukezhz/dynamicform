@@ -1,8 +1,13 @@
+from os import environ
 import MySQLdb as mysql
 
+hostname = environ.get("MYSQL_HOST")
+username = environ.get("MYSQL_USER")
+password = environ.get("MYSQL_PASSWORD")
+database = environ.get("MYSQL_DATABASE")
 
 class MySQLManager:
-    def __init__(self, hostname, username, password, database, *args, **kwargs):
+    def __init__(self, hostname=hostname, username=username, password=password, database=database, *args, **kwargs):
         self.hostname = hostname
         self.username = username
         self.password = password

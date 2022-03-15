@@ -16,7 +16,7 @@ load_dotenv(path.join(basedir, ".env"))
 hostname = environ.get("MYSQL_HOST")
 username = environ.get("MYSQL_USER")
 password = environ.get("MYSQL_PASSWORD")
-database = environ.get("MYSQL_DB")
+database = environ.get("MYSQL_DATABASE")
 
 
 def create_table(tablename=None):

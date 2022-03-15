@@ -1,4 +1,3 @@
-from os import environ
 from api.model.mysqlmanager import MySQLManager
 from api.model.user.model import (
     create_user_table,
@@ -12,14 +11,9 @@ from api.model.user.model import (
     select_all_from_token,
 )
 
-hostname = environ.get("MYSQL_HOST")
-username = environ.get("MYSQL_USER")
-password = environ.get("MYSQL_PASSWORD")
-database = environ.get("MYSQL_DB")
-
 
 def get_users():
-    with MySQLManager(hostname, username, password, database) as sql:
+    with MySQLManager() as sql:
         conn = sql
         cur = conn.cursor()
         if select_all_user_table(cur) > 0:

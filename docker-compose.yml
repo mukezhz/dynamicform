@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  server:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - dform_data:${PWD}/backend
+    command: poetry run python app.py
+    env_file:
+      - ./backend/.env
+    ports:
+      - 8000:5000
+    depends_on: 
+      - db
+    networks: 
+      - backend_network
+# database name
+  db:
+    image: mariadb:latest
+    volumes:
+      - mariadb_data:/var/lib/mysql/
+    env_file:
+      - ./backend/.env
+    ports:
+      - 3306:3306
+    networks:
+      - backend_network
+
+volumes:
+  mariadb_data:
+  dform_data:
+  
+networks: 
+  backend_network:

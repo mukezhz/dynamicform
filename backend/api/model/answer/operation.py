@@ -1,4 +1,3 @@
-from os import environ
 from MySQLdb import OperationalError, IntegrityError
 from api.model.mysqlmanager import MySQLManager
 from api.model.answer.model import (
@@ -9,14 +8,9 @@ from api.model.answer.model import (
     update_answer_table
 )
 
-hostname = environ.get("MYSQL_HOST")
-username = environ.get("MYSQL_USER")
-password = environ.get("MYSQL_PASSWORD")
-database = environ.get("MYSQL_DB")
-
 
 def get_answers():
-    with MySQLManager(hostname, username, password, database) as sql:
+    with MySQLManager() as sql:
         conn = sql
         cur = conn.cursor()
         if select_all_answer_table(cur) > 0:

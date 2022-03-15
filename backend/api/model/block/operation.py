@@ -1,4 +1,3 @@
-from os import environ
 from MySQLdb import OperationalError, IntegrityError
 from api.model.mysqlmanager import MySQLManager
 from api.model.block.model import (
@@ -8,14 +7,9 @@ from api.model.block.model import (
     delete_block_from_id
 )
 
-hostname = environ.get("MYSQL_HOST")
-username = environ.get("MYSQL_USER")
-password = environ.get("MYSQL_PASSWORD")
-database = environ.get("MYSQL_DB")
-
 
 def get_blocks():
-    with MySQLManager(hostname, username, password, database) as sql:
+    with MySQLManager() as sql:
         conn = sql
         cur = conn.cursor()
         if select_all_block_table(cur) > 0:

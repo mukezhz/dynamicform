@@ -6,7 +6,7 @@ from api.model.mysqlmanager import MySQLManager
 hostname = environ.get("MYSQL_HOST")
 username = environ.get("MYSQL_USER")
 password = environ.get("MYSQL_PASSWORD")
-database = environ.get("MYSQL_DB")
+database = environ.get("MYSQL_DATABASE")
 
 
 CREATE_USER_FORM_TABLE = """

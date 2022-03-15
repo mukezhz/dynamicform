@@ -2,11 +2,16 @@
 
 This is the clone of google form
 
-## TO EXECUTE THIS APP:
-
-0. clone this repo
+1. clone this repo
 ```
 git clone https://github.com/mukezhz/dynamicform.git
+
+```
+
+## TO EXECUTE THIS APP: PRIMITIVE APPROACH
+0. goto dynamicform's backend
+``` 
+cd dynamicform/
 ```
 
 1. install poetry
@@ -24,7 +29,7 @@ poetry install
 mv .env_sample .env
 ```
 
-4. update the .env
+4. update the .env & check the **NOTE:** below
 
 5. create necessary tables
 ```
@@ -37,6 +42,12 @@ python app.py -p 8000
 ```
 
 **NOTE:** You need to install mysql and create database before filling into .env
+```
+**NOTE:** I am using mariadb which is compatible with mysql
+mysql -h <hostname> -u <username> -p
+
+CREATE DATABASE <database-name>;
+```
  
  ### Ways to install mysql:
 
@@ -45,3 +56,44 @@ python app.py -p 8000
  3. for unix like system install mysql server
     - [for ubuntu](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04)
     - [for arch](https://www.vultr.com/docs/how-to-install-mariadb-10-3-or-mysql-8-0-on-arch-linux/)
+
+  For arch:
+  ```
+  sudo pacman -S mariadb mariadb-clients mariadb-libs
+  ```
+  
+## TO EXECUTE THIS APP: MODERN APPROACH
+
+0. goto dynamicform
+```
+cd dynamicform/
+```
+1. [Install docker](https://docs/docker.com/get-docker/)
+2. [Install docker-compose](https://docs.docker.com/compose/install)
+
+For arch:
+```
+sudo pacman -S docker docker-compose
+```
+3. add your `username` in `docker` group. [So that we don't need to use sudo] 
+```
+sudo usermod -aG docker <your-username>
+``` 
+4. run docker-compose and viola: [Don't forget to check **NOTE** below]
+```
+docker-compose up
+```
+---
+5. use api testing tools like postman, insomnia, or curl, or browser
+
+To check:
+```
+curl http://localhost:8000/api/users/
+```
+
+**NOTE**: **DON'T FORGET TO CHANGE YOUR .env** if you are using MODERN APPROACH
+
+`MYSQL_HOST=db` [because: name of my database in `docker-compose` is `db`]
+
+---
+**Enjoy your day:** 😋 😋 😋 
