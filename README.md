@@ -24,9 +24,9 @@ pip install poetry
 poetry shell
 poetry install
 ```
-3. rename the .env_sample to .env
+3. copy the .env_sample to .env
 ```
-mv .env_sample .env
+cp .env_sample .env
 ```
 
 4. update the .env & check the **NOTE:** below
@@ -42,14 +42,9 @@ python app.py -p 8000
 ```
 
 **NOTE:** You need to install mysql and create database before filling into .env
-```
-**NOTE:** I am using mariadb which is compatible with mysql
-mysql -h <hostname> -u <username> -p
 
-CREATE DATABASE <database-name>;
-```
  
- ### Ways to install mysql:
+### Ways to install mysql:
 
  1. install [xampp](https://www.apachefriends.org/download.html)
  2. install mysql specific to your operating system
@@ -63,6 +58,8 @@ CREATE DATABASE <database-name>;
   ```
   
 ## TO EXECUTE THIS APP: MODERN APPROACH
+---
+### No need to install database managent software in your machine
 
 0. goto dynamicform
 ```
@@ -93,7 +90,7 @@ curl http://localhost:8000/api/users/
 
 **NOTE**: **DON'T FORGET TO CHANGE YOUR .env** if you are using MODERN APPROACH
 
-`MYSQL_HOST=db` [because: name of my database in `docker-compose` is `db`]
+`MYSQL_HOST=db` [because: name of my database in `docker-compose` is `db` or change the docker-compose.yml file]
 
 ---
 **Enjoy your day:** 😋 😋 😋 
