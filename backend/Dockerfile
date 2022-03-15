@@ -13,4 +13,3 @@ COPY ./poetry.lock ./pyproject.toml /backend/
 # RUN poetry export -f requirements.txt --without-hashes | pip install -r /dev/stdin
 RUN poetry install
 COPY . /backend
-RUN ["poetry", "run", "python", "db.py", "-t all"]
