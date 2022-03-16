@@ -57,7 +57,12 @@ python app.py -p 8000
   sudo pacman -S mariadb mariadb-clients mariadb-libs
   ```
   
-## TO EXECUTE THIS APP: MODERN APPROACH
+## TO EXECUTE THIS APP: MODERN APPROACH 
+
+### [checked only on docker-compose verion 1.28.* and 2.3.*]
+
+**Please use docker-compose version 1.28.* or +**
+
 ---
 ### No need to install database managent software in your machine
 
