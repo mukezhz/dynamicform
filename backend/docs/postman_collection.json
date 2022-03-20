@@ -1,0 +1,549 @@
+{
+	"info": {
+		"_postman_id": "2d3d460f-2188-440f-b4ac-2b9518a237e3",
+		"name": "Dynamic Form",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "createUsers",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"musa\",\n    \"address\": \"nepal\",\n    \"phone\": \"1234567890\",\n    \"email\": \"musa@musa.com\",\n    \"password\": \"Nepal@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserFromID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/users/{{userID}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test working\",\n    \"address\": \"testsia\",\n    \"phone\": \"1234567800\",\n    \"email\": \"test@gmail.com\",\n    \"password\": \"Nepal@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/{{userID}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUserFromID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/users/{{userID}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "form",
+			"item": [
+				{
+					"name": "createForm",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test\",\n    \"subtitle\": \"Testing subtitle\",\n    \"userID\": \"{{userID}}\",\n    \"blocks\": [\n        {\n            \"typeof\": \"text\",\n            \"isRequired\": true,\n            \"answer\": \"\",\n            \"options\": \"\",\n            \"question\": \"What is your favorite programming language?\"\n        },\n        {\n            \"typeof\": \"checkbox\",\n            \"isRequired\": false,\n            \"answer\": \"\",\n            \"options\": \"wsa:tc:np\",\n            \"question\": \"Select your favorite subject?\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/forms/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"forms",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getForms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/forms",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"forms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getFormFromID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/forms/{{formID}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"forms",
+								"{{formID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getFormWithAnswerFromID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/forms/answer/{{formID}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"forms",
+								"answer",
+								"{{formID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateForm",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"formID\": \"{{formID}}\",\n    \"subtitle\": \"Testing subtitle\",\n    \"title\": \"Chasma\",\n    \"userID\": \"{{userID}}\",\n    \"blocks\": [\n        {\n            \"blockID\": \"{{blockIDcheckbox}}\",\n            \"isRequired\": 0,\n            \"options\": \"wsa:tc:ictpm\",\n            \"question\": \"Select your favorite subject?\",\n            \"typeof\": \"checkbox\"\n        },\n        {\n            \"blockID\": \"{{blockIDtext}}\",\n            \"isRequired\": 0,\n            \"options\": \"\",\n            \"question\": \"What is your favorite programming language?\",\n            \"typeof\": \"text\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/forms/{{formID}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"forms",
+								"{{formID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteForm",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/forms/{{formID}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"forms",
+								"{{formID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "block",
+			"item": [
+				{
+					"name": "getBlocks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/blocks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"blocks"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "answer",
+			"item": [
+				{
+					"name": "getAnswers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/answers/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"answers",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateAnswer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"answer\": \"Mikasa\",\n    \"answerID\": \"{{answerIDtext}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/answers/{{answerIDtext}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"answers",
+								"{{answerIDtext}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAnswerofUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/answers/user?userID={{userID}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"answers",
+								"user"
+							],
+							"query": [
+								{
+									"key": "userID",
+									"value": "{{userID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setAnswer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test\",\n    \"userID\": \"{{userID}}\",\n    \"formID\": \"{{formID}}\",\n    \"blocks\": [\n        {\n            \"answer\": \"Mikasa\",\n            \"blockID\": \"{{blockIDtext}}\"\n        },\n        {\n            \"answer\": \"wsa\",\n            \"blockID\": \"{{blockIDcheckbox}}\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/answers/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"answers",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@gmail.com\",\n    \"password\": \"Nepal@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auths/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auths",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Mukesh Chaudhary\",\n    \"address\": \"Lalitpur\",\n    \"phone\": \"1234567890\",\n    \"email\": \"mukezhz@gmail.com\",\n    \"password\": \"Nepal@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auths/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auths",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@gmail.com\",\n    \"refresh_token\": \"{{refresh_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auths/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auths",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"samu@musa.com\",\n    \"refresh_token\": \"{{refresh_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auths/token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auths",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
